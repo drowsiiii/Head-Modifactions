@@ -53,3 +53,7 @@ See the [LICENSE](LICENSE) file for details.
 this works only in modded lobbys
 dont try to get the head mods outside of them
 no clue what would happen and dont wanna test
+
+## other
+
+This product is not affiliated with Gorilla Tag or Another Axiom LLC and is not endorsed or otherwise sponsored by Another Axiom LLC. Portions of the materials contained herein are property of Another Axiom LLC. © 2025 Another Axiom LLC.
