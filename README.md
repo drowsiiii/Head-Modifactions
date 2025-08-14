@@ -14,9 +14,12 @@ Change the size, shape, and rotation of gorilla heads for hilarious gameplay!
 - **Flat Head** – Flattened heads that spin horizontally.  was going to be a helicopter head but i dont wanna now cuz too hard and yeah
 - **Spaz Head Limits** – Limit or increase crazy head movement.  spam values 
 And More!
+
+-------------
 This is the gui ou should see on you computer screen it wont work untill your in a modded lobby
 plus it wouldnt work if you was disconnected
 would have to be changed
+---------------
 <img width="291" height="409" alt="{3B12FDA6-F98C-44E7-9D17-7196BCB827F1}" src="https://github.com/user-attachments/assets/5110e45e-1613-43f1-b60c-05011622ffd1" />
 
 ---
