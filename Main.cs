@@ -1,9 +1,11 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx;
 using UnityEngine;
 using static GTTemplate.Info;
+ using Photon.Pun;
+ using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Random = System.Random;
 
 
@@ -279,4 +281,3 @@ namespace GTTemplate
 
     }
 }
-
