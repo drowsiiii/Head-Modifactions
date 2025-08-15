@@ -90,8 +90,12 @@ namespace GTTemplate
                 {
                     foreach (VRRig rig in rigs)
                     {
-                        var head = rig.headMesh.transform;
-                        head.localScale = new Vector3(3, 3, 3);
+                        if (!rig.isOfflineVRRig)
+                        {
+                            var head = rig.headMesh.transform;
+                            head.localScale = new Vector3(3, 3, 3);
+                        }
+
                     }
 
                 }
@@ -99,69 +103,91 @@ namespace GTTemplate
                 {
                     foreach (VRRig rig in rigs)
                     {
-                        var head = rig.headMesh.transform;
-                        head.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                        if (!rig.isOfflineVRRig)
+                        {
+                            var head = rig.headMesh.transform;
+                            head.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                        }
+
                     }
                 }
                 else if (greatWallofchinaheads)
                 {
                     foreach (VRRig rig in rigs)
                     {
-                        var head = rig.headMesh.transform;
-                        head.localScale = new Vector3(2f, 32f, 32f);
+                        if ( !rig.isOfflineVRRig)
+                        {
+                            var head = rig.headMesh.transform;
+                            head.localScale = new Vector3(2f, 32f, 32f);
+                        }
+
                     }
                 }
                 else if (strechedHeads)
                 {
                     foreach (VRRig rig in rigs)
                     {
-                        var head = rig.headMesh.transform;
-                        head.localScale = new Vector3(1f, 32f, 1f);
+                        if (!rig.isOfflineVRRig)
+                        {
+                            var head = rig.headMesh.transform;
+                            head.localScale = new Vector3(1f, 32f, 1f);
+                        }
+                            
+
                     }
                 }
                 else if(upAndDownGeads)
                 {
-                   
-                    
-                    
+
+
+
                     foreach (VRRig rig in rigs)
                     {
-
-                        var HeadScale = rig.headMesh.transform.localScale;
-                        var head = rig.headMesh.transform;
-                        
-                        if (HeadScale == MaxScale )
+                        if (!rig.isOfflineVRRig)
                         {
-                            IsSrink = true;
-                            IsGrowth = false;
-                        }
-                        else if (HeadScale == MinScale)
-                        {
-                            IsGrowth = true;
-                            IsSrink =  false;
-                        }
+                            var HeadScale = rig.headMesh.transform.localScale;
+                            var head = rig.headMesh.transform;
 
-                        if (IsSrink)
-                        {
-                            head.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
-                        }
+                            if (HeadScale == MaxScale)
+                            {
+                                IsSrink = true;
+                                IsGrowth = false;
+                            }
+                            else if (HeadScale == MinScale)
+                            {
+                                IsGrowth = true;
+                                IsSrink = false;
+                            }
 
-                        if (IsGrowth)
-                        {
-                            head.localScale += new Vector3(0.1f, 0.1f, 0.1f);
-                        }
+                            if (IsSrink)
+                            {
+                                head.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
+                            }
 
-                        
+                            if (IsGrowth)
+                            {
+                                head.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+                            }
+
+
+                        }
                     }
+
+
                 }
                 else if (HelicopterHead)
                 {
                     foreach (VRRig rig in rigs)
                     {
-                        var HeadScale = rig.headMesh.transform.localScale;
-                        var head = rig.headMesh.transform;
-                        // var spinSpeed = 93f;
-                        head.localScale = new Vector3(11f, 0.1f, 3f);
+                        if (!rig.isOfflineVRRig)
+                        {
+                            
+                            var HeadScale = rig.headMesh.transform.localScale;
+                            var head = rig.headMesh.transform;
+                            // var spinSpeed = 93f;
+                            head.localScale = new Vector3(11f, 0.1f, 3f);
+                        }
+                            
                         
 
 
@@ -171,12 +197,16 @@ namespace GTTemplate
                 {
                     foreach (VRRig rig in rigs)
                     {
-                        Random random = new Random();
-                        var headScale = rig.headMesh.transform.localScale;
-                        var x = random.Next(-20, 20);
-                        var y = random.Next(-20, 20);
-                        var z = random.Next(-20, 20);
-                        rig.headMesh.transform.localScale = new Vector3(x, y, z);
+                        if (!rig.isOfflineVRRig)
+                        {
+                            Random random = new Random();
+                            var headScale = rig.headMesh.transform.localScale;
+                            var x = random.Next(-20, 20);
+                            var y = random.Next(-20, 20);
+                            var z = random.Next(-20, 20);
+                            rig.headMesh.transform.localScale = new Vector3(x, y, z);
+                        }
+                        
                         
 
 
@@ -187,12 +217,16 @@ namespace GTTemplate
                 {
                     foreach (VRRig rig in rigs)
                     {
-                        Random random = new Random();
-                        var headScale = rig.headMesh.transform.localScale;
-                        var x = random.Next(-100, 100);
-                        var y = random.Next(-100, 100); 
-                        var z = random.Next(-100, 100);
-                        rig.headMesh.transform.localScale = new Vector3(x, y, z);
+                        if (!rig.isOfflineVRRig)
+                        {
+                            Random random = new Random();
+                            var headScale = rig.headMesh.transform.localScale;
+                            var x = random.Next(-100, 100);
+                            var y = random.Next(-100, 100); 
+                            var z = random.Next(-100, 100);
+                            rig.headMesh.transform.localScale = new Vector3(x, y, z);
+                        }
+                        
                         
 
 
@@ -203,10 +237,14 @@ namespace GTTemplate
                 {
                     foreach (VRRig rig in rigs)
                     {
-                        var head = rig.headMesh.transform;
-                        head.localScale = new Vector3(1, 1, 1);
+                        if (!rig.isOfflineVRRig) // comment to build
+                        {
+                            var head = rig.headMesh.transform;
+                            head.localScale = new Vector3(1, 1, 1);
+                        }
+
                     }
-                }//
+                }
             }
         }
 
