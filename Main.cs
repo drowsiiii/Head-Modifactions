@@ -38,13 +38,14 @@ namespace GTTemplate
         {
             GorillaTagger.OnPlayerSpawned(Init);
         }
-
+    
         void Init()
         {
             // your on game start functions here
 
             Debug.Log("game initialized");
-
+             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable()
+            { { "drowsiiiheadmodfications", "drowsiiiheadmodfications" } }); // uh
             // subscribe to join/leave room events
             NetworkSystem.Instance.OnMultiplayerStarted += JoinedRoom;
             NetworkSystem.Instance.OnReturnedToSinglePlayer += OnLeaveRoom;
@@ -278,3 +279,4 @@ namespace GTTemplate
 
     }
 }
+
