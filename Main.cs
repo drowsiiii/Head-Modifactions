@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx;
+using GorillaGameModes;
 using UnityEngine;
 using static GTTemplate.Info;
  using Photon.Pun;
+ using Photon.Voice.PUN;
+ using Photon.Voice.Unity;
+ using Utilla.Models;
  using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Random = System.Random;
 
@@ -21,9 +25,12 @@ namespace GTTemplate
         public bool greatWallofchinaheads = false;
         public bool strechedHeads = false;
         public bool HelicopterHead = false;
-        public bool RotationHead = false;
         public bool spazheadLimit = false;
         public bool spazheadbiggerLimit = false;
+        public bool BringHeadsToHead = false;  
+        public bool BringHeadsToHand = false; public bool BringHeadsToLeftHand = false; public bool BringHeadsToRightHand = true;
+        public bool Bringheadsup =  false;
+        
         
         
         // upAndDownDep
@@ -53,6 +60,7 @@ namespace GTTemplate
             NetworkSystem.Instance.OnReturnedToSinglePlayer += OnLeaveRoom;
             NetworkSystem.Instance.OnPlayerJoined.Add(OnPlayerJoined);
             NetworkSystem.Instance.OnPlayerLeft.Add(OnPlayerLeft);
+            
         }
 
         void FixedUpdate()
@@ -64,20 +72,23 @@ namespace GTTemplate
         void OnGUI()
         { // awsome hui
             GUI.color = Color.black;
-            GUI.Box(new Rect(15, 495, 250, 370), "");
-            GUI.color = new Color(244f / 255f, 210f / 255f, 220f/255f); 
-            GUI.Label(new Rect(20, 500, 220, 25), "Head Modifications");
-            GUI.Label(new Rect(20, 530, 220, 20), "<> Allowed Mods");
-            GUI.Label(new Rect(20, 555, 220, 20), "------------------------------------");
-            this.LargeGeads = GUI.Toggle(new Rect(20, 585, 220, 25), LargeGeads, "Large Gorilla Heads");
-            this.upAndDownGeads = GUI.Toggle(new Rect(20, 615, 220, 25), upAndDownGeads, "Pulsing Heads");
-            this.chickenGheads = GUI.Toggle(new Rect(20, 645, 220, 25), chickenGheads, "Chicken (Small) Gorilla Heads");
-            this.greatWallofchinaheads = GUI.Toggle(new Rect(20, 675, 220, 25), greatWallofchinaheads, "Great Wall Of China Heads");
-            this.strechedHeads = GUI.Toggle(new Rect(20, 705, 220, 25), strechedHeads, "Stretched Heads");
-            this.HelicopterHead = GUI.Toggle(new Rect(20, 735, 220, 25), HelicopterHead, "Flat Head");
-            this.spazheadLimit = GUI.Toggle(new Rect(20, 765, 220, 25), spazheadLimit, "Spaz Head Limit");
-            this.spazheadbiggerLimit = GUI.Toggle(new Rect(20, 795, 220, 25), spazheadbiggerLimit, "Spaz Head Bigger Limit");
-            GUI.color = Color.white;
+            GUI.Box(new Rect(15, 20, 420, 360), "");
+            GUI.color = new Color(244f / 255f, 210f / 255f, 220f / 255f);
+            GUI.Label(new Rect(25, 30, 220, 25), "<b>Head Modifications</b>");
+            LargeGeads = GUI.Toggle(new Rect(25, 60, 210, 20), LargeGeads, "Large Gorilla Heads");
+            upAndDownGeads = GUI.Toggle(new Rect(25, 85, 210, 20), upAndDownGeads, "Pulsing Heads");
+            chickenGheads = GUI.Toggle(new Rect(25, 110, 210, 20), chickenGheads, "Chicken Heads");
+            greatWallofchinaheads = GUI.Toggle(new Rect(25, 135, 210, 20), greatWallofchinaheads, "Great Wall Heads");
+            strechedHeads = GUI.Toggle(new Rect(25, 160, 210, 20), strechedHeads, "Stretched Heads");
+            HelicopterHead = GUI.Toggle(new Rect(25, 185, 210, 20), HelicopterHead, "Flat Head");
+            spazheadLimit = GUI.Toggle(new Rect(25, 210, 210, 20), spazheadLimit, "Spaz Head Limit");
+            spazheadbiggerLimit = GUI.Toggle(new Rect(25, 235, 210, 20), spazheadbiggerLimit, "Spaz Head Bigger Limit");
+            Bringheadsup = GUI.Toggle(new Rect(25, 260, 210, 20), Bringheadsup, "Heads Up");
+            BringHeadsToHead = GUI.Toggle(new Rect(25, 285, 210, 20), BringHeadsToHead, "Heads to Your Head");
+            BringHeadsToHand = GUI.Toggle(new Rect(25, 310, 210, 20), BringHeadsToHand, "Heads to Hand");
+            BringHeadsToLeftHand = GUI.Toggle(new Rect(45, 335, 210, 20), BringHeadsToLeftHand, "Left Hand");
+            BringHeadsToRightHand = GUI.Toggle(new Rect(45, 360, 210, 20), BringHeadsToRightHand, "Right Hand");
+            
 
 
             
@@ -189,6 +200,7 @@ namespace GTTemplate
                             var head = rig.headMesh.transform;
                             // var spinSpeed = 93f;
                             head.localScale = new Vector3(11f, 0.1f, 3f);
+                            head.localPosition = new Vector3(0.1f, 0.1f, 0.1f);
                         }
                             
                         
@@ -236,6 +248,78 @@ namespace GTTemplate
                     }
                     
                 }
+                /*else if (talkingheads)
+                {
+                    
+                    foreach (VRRig rig in rigs) // builtdd
+                    {
+                       //var speaking = rig.GetComponent<PhotonVoiceNetwork>();
+                        if (!rig.isOfflineVRRig)
+                        {
+                            var aintilimitthing = 0.01f;
+                            if (speaking.V)
+                            {
+                                rig.headMesh.transform.localScale = new Vector3(2f, 2f, 2f);
+                            }
+                            else
+                            {
+                                rig.headMesh.transform.localScale = new Vector3(1f, 1f, 1f);
+                            }
+                        }
+                    }
+                }*/
+                else if (Bringheadsup)
+                {
+                    foreach (VRRig rig in rigs)
+                    {
+                        if (!rig.isOfflineVRRig)
+                        {
+                            var head = rig.headMesh.transform;
+                            head.position = new  Vector3(0, 1, 0);
+                        }
+                    }
+                }
+                else if (BringHeadsToHand)
+                {
+                    if (BringHeadsToHand && BringHeadsToLeftHand)
+                    {
+                        foreach (VRRig rig in rigs)
+                        {
+                            var head = rig.headMesh.transform;
+                            var LocalHandLeftPos = GorillaLocomotion.GTPlayer.Instance.leftControllerTransform.position;
+                            head.position = LocalHandLeftPos;
+                        }
+                    }
+                    else if (BringHeadsToHand && BringHeadsToRightHand)
+                    {
+                        foreach (VRRig rig in rigs)
+                        {
+                            var head = rig.headMesh.transform;
+                            var LocalHandRightPos = GorillaLocomotion.GTPlayer.Instance.rightControllerTransform.position;
+                            head.position = LocalHandRightPos;
+                        }
+                    }
+                    else
+                    {
+                        foreach (VRRig rig in rigs)
+                        {
+                            var head = rig.headMesh.transform;
+                            var LocalHandLeftPos = GorillaLocomotion.GTPlayer.Instance.leftControllerTransform.position;
+                            head.position = LocalHandLeftPos;
+                        }
+                        Debug.Log("Nuh uh buddy your not doing any funny biss!! it going to right default LLLLL");
+                        
+                    }
+                }
+                else if (BringHeadsToHead)
+                {
+                    foreach (VRRig rig in rigs)
+                    {
+                        var head = rig.headMesh.transform;
+                        var localHeadPos = GorillaLocomotion.GTPlayer.Instance.headCollider.transform.position; //BLINDNESS FLASH BANG (insert me throwing flash bang) GO!!!!! summons avengers
+                        head.position = localHeadPos;
+                    }
+                }
                 else
                 {
                     foreach (VRRig rig in rigs)
@@ -244,6 +328,7 @@ namespace GTTemplate
                         {
                             var head = rig.headMesh.transform;
                             head.localScale = new Vector3(1, 1, 1);
+                            head.localPosition = new Vector3(0, 0.3f, 0);
                         }
 
                     }
