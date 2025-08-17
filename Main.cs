@@ -8,6 +8,7 @@ using static GTTemplate.Info;
  using Photon.Pun;
  using Photon.Voice.PUN;
  using Photon.Voice.Unity;
+ using UnityEngine.Animations.Rigging;
  using Utilla.Models;
  using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Random = System.Random;
@@ -33,7 +34,8 @@ namespace GTTemplate
         public Vector3 HeadStart;
         public Vector3 HaEnd;
         public bool allowedtousehead = false;
-        
+        public bool HunchBackHeads = false;
+        public bool SpeakingHeads = false;
         // upAndDownDep
         bool IsSrink = true;
         bool IsGrowth = false;
@@ -74,7 +76,7 @@ namespace GTTemplate
         void OnGUI()
         { // awsome hui
             GUI.color = Color.black;
-            GUI.Box(new Rect(15, 20, 420,410), "--------------");
+            GUI.Box(new Rect(15, 20, 420,450), "--------------");
             GUI.color = new Color(244f / 255f, 210f / 255f, 220f / 255f);
             GUI.Label(new Rect(25, 30, 6000, 30), "<b>Head Modifications</b>" + HeadStart + "     " + HaEnd);
             LargeGeads = GUI.Toggle(new Rect(25, 60, 210, 20), LargeGeads, "Large Gorilla Heads");
@@ -91,7 +93,8 @@ namespace GTTemplate
             BringHeadsToLeftHand = GUI.Toggle(new Rect(45, 335, 210, 20), BringHeadsToLeftHand, "Left Hand");
             BringHeadsToRightHand = GUI.Toggle(new Rect(45, 360, 210, 20), BringHeadsToRightHand, "Right Hand");
             allowedtousehead = GUI.Toggle(new Rect(45, 385, 210, 20), allowedtousehead, "Allow Head");
-            
+            HunchBackHeads = GUI.Toggle(new Rect(25, 410, 210, 20), HunchBackHeads, "HunchBack Heads");
+            // SpeakingHeads = GUI.Toggle(new Rect(25, 435, 210, 20), SpeakingHeads, "Size Speaking Heads");
 
 
             
@@ -278,7 +281,8 @@ namespace GTTemplate
                         if (!rig.isOfflineVRRig)
                         {
                             var head = rig.headMesh.transform;
-                            head.position = new  Vector3(0, 1, 0);
+                            head.localPosition =  new Vector3(0f, 0.8f, 0f); 
+                            
                         }
                     }
                 }
@@ -298,18 +302,18 @@ namespace GTTemplate
                                 }
                                
                             }
-                        }
-                        else if (BringHeadsToHand && BringHeadsToRightHand)
-                        {
-                            foreach (VRRig rig in rigs)
+                            if (BringHeadsToHand && BringHeadsToRightHand)
                             {
-                                if (!rig.isOfflineVRRig)
+                                foreach (VRRig rig in rigs)
                                 {
-                                    var head = rig.headMesh.transform;
-                                    var LocalHandRightPos = GorillaLocomotion.GTPlayer.Instance.rightControllerTransform.position;
-                                    head.position = LocalHandRightPos;
-                                }
+                                    if (!rig.isOfflineVRRig)
+                                    {
+                                        var head = rig.headMesh.transform;
+                                        var LocalHandRightPos = GorillaLocomotion.GTPlayer.Instance.rightControllerTransform.position;
+                                        head.position = LocalHandRightPos;
+                                    }
 
+                                }
                             }
                         }
                         else
@@ -340,16 +344,18 @@ namespace GTTemplate
                                 var LocalHandLeftPos = GorillaLocomotion.GTPlayer.Instance.leftControllerTransform.position;
                                 head.position = LocalHandLeftPos;
                             }
-                        }
-                        else if (BringHeadsToHand && BringHeadsToRightHand)
-                        {
-                            foreach (VRRig rig in rigs)
+                            
+                            if (BringHeadsToHand && BringHeadsToRightHand)
                             {
-                                var head = rig.headMesh.transform;
-                                var LocalHandRightPos = GorillaLocomotion.GTPlayer.Instance.rightControllerTransform.position;
-                                head.position = LocalHandRightPos;
+                                foreach (VRRig rig in rigs)
+                                {
+                                    var head = rig.headMesh.transform;
+                                    var LocalHandRightPos = GorillaLocomotion.GTPlayer.Instance.rightControllerTransform.position;
+                                    head.position = LocalHandRightPos;
+                                }
                             }
                         }
+                        
                         else
                         {  
                             foreach (VRRig rig in rigs)
@@ -371,6 +377,40 @@ namespace GTTemplate
                         var head = rig.headMesh.transform;
                         var localHeadPos = GorillaLocomotion.GTPlayer.Instance.headCollider.transform.position; //BLINDNESS FLASH BANG (insert me throwing flash bang) GO!!!!! summons avengers
                         head.position = localHeadPos;
+                    }
+                }
+                else if  (HunchBackHeads)
+                { // funny bug i found in testing!! lol
+                    // made it a feature
+
+                    foreach (VRRig rig in rigs)
+                    {
+                        if (!rig.isOfflineVRRig)
+                        {
+                            var head = rig.headMesh.transform;
+                            head.localPosition = new Vector3(0f, 0.3f, 0f);
+                        }
+                    }
+                }
+                else if (SpeakingHeads)
+                {
+                    foreach (VRRig rig in rigs)
+                    {
+                        
+                        var Voice = rig.headMesh.GetComponent<PhotonVoiceView>();
+                        if (!rig.isOfflineVRRig)
+                        {
+                            if (Voice.IsSpeaking)
+                            {
+                                rig.headMesh.transform.localScale = new Vector3(2f, 2f, 2f);
+                            }
+                            else
+                            {
+                                rig.headMesh.transform.localScale = new Vector3(1f, 1f, 1f);
+                            }
+                            
+                        }
+
                     }
                 }
                 else
