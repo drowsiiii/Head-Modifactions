@@ -30,8 +30,9 @@ namespace GTTemplate
         public bool BringHeadsToHead = false;  
         public bool BringHeadsToHand = false; public bool BringHeadsToLeftHand = false; public bool BringHeadsToRightHand = true;
         public bool Bringheadsup =  false;
-        
-        
+        public Vector3 HeadStart;
+        public Vector3 HaEnd;
+        public bool allowedtousehead = false;
         
         // upAndDownDep
         bool IsSrink = true;
@@ -51,7 +52,7 @@ namespace GTTemplate
         void Init()
         {
             // your on game start functions here
-
+            
             Debug.Log("game initialized");
              PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable()
             { { "drowsiiiheadmodfications", "drowsiiiheadmodfications" } }); // uh
@@ -60,7 +61,8 @@ namespace GTTemplate
             NetworkSystem.Instance.OnReturnedToSinglePlayer += OnLeaveRoom;
             NetworkSystem.Instance.OnPlayerJoined.Add(OnPlayerJoined);
             NetworkSystem.Instance.OnPlayerLeft.Add(OnPlayerLeft);
-            
+            HaEnd = VRRig.LocalRig.headMesh.transform.localPosition;
+            HeadStart = VRRig.LocalRig.transform.localPosition;
         }
 
         void FixedUpdate()
@@ -72,9 +74,9 @@ namespace GTTemplate
         void OnGUI()
         { // awsome hui
             GUI.color = Color.black;
-            GUI.Box(new Rect(15, 20, 420, 360), "");
+            GUI.Box(new Rect(15, 20, 420,410), "--------------");
             GUI.color = new Color(244f / 255f, 210f / 255f, 220f / 255f);
-            GUI.Label(new Rect(25, 30, 220, 25), "<b>Head Modifications</b>");
+            GUI.Label(new Rect(25, 30, 6000, 30), "<b>Head Modifications</b>" + HeadStart + "     " + HaEnd);
             LargeGeads = GUI.Toggle(new Rect(25, 60, 210, 20), LargeGeads, "Large Gorilla Heads");
             upAndDownGeads = GUI.Toggle(new Rect(25, 85, 210, 20), upAndDownGeads, "Pulsing Heads");
             chickenGheads = GUI.Toggle(new Rect(25, 110, 210, 20), chickenGheads, "Chicken Heads");
@@ -85,9 +87,10 @@ namespace GTTemplate
             spazheadbiggerLimit = GUI.Toggle(new Rect(25, 235, 210, 20), spazheadbiggerLimit, "Spaz Head Bigger Limit");
             Bringheadsup = GUI.Toggle(new Rect(25, 260, 210, 20), Bringheadsup, "Heads Up");
             BringHeadsToHead = GUI.Toggle(new Rect(25, 285, 210, 20), BringHeadsToHead, "Heads to Your Head");
-            BringHeadsToHand = GUI.Toggle(new Rect(25, 310, 210, 20), BringHeadsToHand, "Heads to Hand");
+            BringHeadsToHand = GUI.Toggle(new Rect(25, 310, 210, 20), BringHeadsToHand, "Heads to Hand --");
             BringHeadsToLeftHand = GUI.Toggle(new Rect(45, 335, 210, 20), BringHeadsToLeftHand, "Left Hand");
             BringHeadsToRightHand = GUI.Toggle(new Rect(45, 360, 210, 20), BringHeadsToRightHand, "Right Hand");
+            allowedtousehead = GUI.Toggle(new Rect(45, 385, 210, 20), allowedtousehead, "Allow Head");
             
 
 
@@ -281,35 +284,85 @@ namespace GTTemplate
                 }
                 else if (BringHeadsToHand)
                 {
-                    if (BringHeadsToHand && BringHeadsToLeftHand)
+                    if (!allowedtousehead)
                     {
-                        foreach (VRRig rig in rigs)
+                        if (BringHeadsToHand && BringHeadsToLeftHand)
                         {
-                            var head = rig.headMesh.transform;
-                            var LocalHandLeftPos = GorillaLocomotion.GTPlayer.Instance.leftControllerTransform.position;
-                            head.position = LocalHandLeftPos;
+                            foreach (VRRig rig in rigs)
+                            {
+                                if (!rig.isOfflineVRRig)
+                                {
+                                    var head = rig.headMesh.transform;
+                                    var LocalHandLeftPos = GorillaLocomotion.GTPlayer.Instance.leftControllerTransform.position;
+                                    head.position = LocalHandLeftPos;
+                                }
+                               
+                            }
                         }
-                    }
-                    else if (BringHeadsToHand && BringHeadsToRightHand)
-                    {
-                        foreach (VRRig rig in rigs)
+                        else if (BringHeadsToHand && BringHeadsToRightHand)
                         {
-                            var head = rig.headMesh.transform;
-                            var LocalHandRightPos = GorillaLocomotion.GTPlayer.Instance.rightControllerTransform.position;
-                            head.position = LocalHandRightPos;
+                            foreach (VRRig rig in rigs)
+                            {
+                                if (!rig.isOfflineVRRig)
+                                {
+                                    var head = rig.headMesh.transform;
+                                    var LocalHandRightPos = GorillaLocomotion.GTPlayer.Instance.rightControllerTransform.position;
+                                    head.position = LocalHandRightPos;
+                                }
+
+                            }
                         }
-                    }
-                    else
-                    {
-                        foreach (VRRig rig in rigs)
+                        else
                         {
-                            var head = rig.headMesh.transform;
-                            var LocalHandLeftPos = GorillaLocomotion.GTPlayer.Instance.leftControllerTransform.position;
-                            head.position = LocalHandLeftPos;
-                        }
-                        Debug.Log("Nuh uh buddy your not doing any funny biss!! it going to right default LLLLL");
+                            foreach (VRRig rig in rigs)
+                            {
+                                if (!rig.isOfflineVRRig)
+                                {
+                                    var head = rig.headMesh.transform;
+                                    var LocalHandLeftPos = GorillaLocomotion.GTPlayer.Instance.leftControllerTransform.position;
+                                    head.position = LocalHandLeftPos;
+                                    Debug.Log("Nuh uh buddy your not doing any funny biss!! it going to right default LLLLL");
+                                }
+
+                            }
+                            
                         
+                        }
                     }
+
+                    if (!allowedtousehead)
+                    {
+                        if (BringHeadsToHand && BringHeadsToLeftHand)
+                        {
+                            foreach (VRRig rig in rigs)
+                            {
+                                var head = rig.headMesh.transform;
+                                var LocalHandLeftPos = GorillaLocomotion.GTPlayer.Instance.leftControllerTransform.position;
+                                head.position = LocalHandLeftPos;
+                            }
+                        }
+                        else if (BringHeadsToHand && BringHeadsToRightHand)
+                        {
+                            foreach (VRRig rig in rigs)
+                            {
+                                var head = rig.headMesh.transform;
+                                var LocalHandRightPos = GorillaLocomotion.GTPlayer.Instance.rightControllerTransform.position;
+                                head.position = LocalHandRightPos;
+                            }
+                        }
+                        else
+                        {  
+                            foreach (VRRig rig in rigs)
+                            {
+                                var head = rig.headMesh.transform;
+                                var LocalHandLeftPos = GorillaLocomotion.GTPlayer.Instance.leftControllerTransform.position;
+                                head.position = LocalHandLeftPos;
+                            }
+                            Debug.Log("Nuh uh buddy your not doing any funny biss!! it going to right default LLLLL");
+                        
+                        }
+                    }
+                    
                 }
                 else if (BringHeadsToHead)
                 {
@@ -324,12 +377,12 @@ namespace GTTemplate
                 {
                     foreach (VRRig rig in rigs)
                     {
-                        if (!rig.isOfflineVRRig) // comment to build
-                        {
+                       
+                        
                             var head = rig.headMesh.transform;
                             head.localScale = new Vector3(1, 1, 1);
-                            head.localPosition = new Vector3(0, 0.3f, 0);
-                        }
+                            head.localPosition = new Vector3(0, 0.4f, 0);
+                        
 
                     }
                 }
@@ -337,7 +390,7 @@ namespace GTTemplate
         }
 
         public void UpdateListie()
-        {
+        { // builig
             rigs = UnityEngine.Object.FindObjectsOfType<VRRig>().ToList();
         }
 
